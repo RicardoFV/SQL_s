@@ -1,7 +1,7 @@
 -- criqcao da procedure clientes
 -- procedure resposnavel cadastrar e alterar um cliente
 DELIMITER //
-CREATE PROCEDURE proc_cliente_cadastrar(IN id INT , 
+CREATE PROCEDURE proc_cadastrar_clientes(IN id INT , 
 													IN nome TEXT , 
 													IN email TEXT , 
 													IN cpf TEXT , 
@@ -16,9 +16,8 @@ Cadastrar:BEGIN
 	START TRANSACTION;
 	-- caso o numero informado seja negativo
 	if id < 0 then 
-		SELECT  'O id tem pode ser 0 ou um numero positivo' AS erro;
+		SELECT  'O id tem pode ser 0 ou um ecomerce_sqlnumero positivo' AS erro;
 		leave Cadastrar;
-		ROLLBACK;
 	END if;
 	
 	-- caso seja 0 significa que sera feito um cadastro
@@ -38,11 +37,26 @@ Cadastrar:BEGIN
 			COMMIT;
 		END if;
 	
-	ELSE  -- significa que sera feito um atuaalizar 
+	END IF;
 	
-	SELECT  'Erro ao salvar Cliente' AS erro;
-	END if;
+	-- caso seja maior que  0 significa que sera feito uma atualizaçao de cadastro
+	if id > 0 then
+		
+			UPDATE clientes AS cli SET cli.nome = nome, cli.email=email, cli.cpf=cpf, cli.telefone=telefone, 
+			cli.dt_alteracao=NOW() WHERE cli.id= id;
+			
+		if excecao = 1 then 
+		
+			SELECT  'Erro ao alterar Cliente' AS erro;
+			leave Cadastrar;
+			ROLLBACK;
+		
+		ELSE 
+		
+			SELECT  'Cliente alterado com Sucesso !' AS sucesso;
+			COMMIT;
+		END if;
+					
+	END IF;
 	
 END;
-
-clientesclientesCALL proc_cliente_cadastrar(0, 'Ricardo', 'emailtext@gmail.com', '12345678901' , '1212345678');
