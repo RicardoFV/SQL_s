@@ -1,3 +1,10 @@
-# Comandos SQL
+# E-comerce SQL
 
-Esse repositório tem como objetivo guardar comandos realizados com a linguagem SQL no Banco de Dados MysQL.
+Esse projeto visa demonstrar de forma simples a execução de alguns comandos SQL's tendo como baso um projeto chamado E-comerce_SQL.
+
+Nesse projeto é abordado a criação de scripts tais como :
+
+- Criação de tabelas;
+- Criação de procedures
+- Criação de views
+- Processo simmples de vendas
