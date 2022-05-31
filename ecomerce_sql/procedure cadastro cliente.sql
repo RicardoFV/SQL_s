@@ -8,7 +8,7 @@ CREATE PROCEDURE proc_cadastrar_clientes(IN id INT ,
 													IN telefone TEXT)
 												
 Cadastrar:BEGIN 
-
+	-- configurando os parametros para devolutiva de enventuais erros
 	DECLARE excecao smallint DEFAULT 0;
 	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION set excecao = 1;
 	

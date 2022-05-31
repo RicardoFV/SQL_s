@@ -9,6 +9,7 @@ CREATE PROCEDURE proc_cadastrar_produtos(IN id INT ,
 													
 cadastrar:BEGIN 
 
+	-- configurando os parametros para devolutiva de enventuais erros
 	DECLARE excecao smallint DEFAULT 0;
 	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION set excecao = 1;
 	
@@ -17,7 +18,7 @@ cadastrar:BEGIN
 	-- caso o numero informado seja negativo
 	if id < 0 then 
 		SELECT  'O id tem pode ser 0 ou um ecomerce_sqlnumero positivo' AS erro;
-		leave Cadastrar;
+		leave cadastrar;
 	END if;
 	
 		-- caso seja 0 significa que sera feito um cadastro
