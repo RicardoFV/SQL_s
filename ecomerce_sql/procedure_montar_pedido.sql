@@ -12,11 +12,11 @@ cadastrar:BEGIN -- inicio
 	DECLARE num_pedido VARCHAR(100); 
 	DECLARE ultimo_id INT;
 	DECLARE valor_produto DECIMAL(10,2);
+	DECLARE qtde_estoque INT DEFAULT 0;
 -- configurando os parametros para devolutiva de enventuais erros
 	DECLARE excecao smallint DEFAULT 0;
 	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION set excecao = 1;
 
-	
 	-- inicia a transação 
 	START TRANSACTION;
 	
@@ -34,20 +34,28 @@ cadastrar:BEGIN -- inicio
 			-- busca o valor do produto 
 			SELECT prod.preco INTO valor_produto FROM produtos AS prod WHERE prod.id = id_produto;
 			
+			-- consulta a quantidade em estoque
+				SELECT quantidade INTO qtde_estoque FROM produtos WHERE id = id_produto;
+				-- caso a quantidade em estoque seja menor do que foi solicitado.
+				if qtde_estoque < quantidade_escolhida then
+						SELECT  'Erro ao salvar Pedido, Estoque insuficiente !' AS erro;
+						leave cadastrar;
+				
+				END if; -- veriifca a quantidade em estoque
+			
 			-- se id_pedido for igual a 0 significa que eu quero inserir um novo pedido
 			if id_pedido = 0 then 
+					-- monta o pedido
+					INSERT INTO pedidos (numero_pedido, status , cliente_id, dt_criacao) 
+					VALUES(num_pedido, 'pendente', id_cliente, NOW());
 				
-				-- monta o pedido
-				INSERT INTO pedidos (numero_pedido, status , cliente_id, dt_criacao) 
-				VALUES(num_pedido, 'pendente', id_cliente, NOW());
-				
-				if excecao = 1 then -- caso de erro no pedido
+					if excecao = 1 then -- caso de erro no pedido
 		
-					SELECT  'Erro ao salvar Pedido' AS erro;
-					leave cadastrar;
-					ROLLBACK;
+						SELECT  'Erro ao salvar Pedido' AS erro;
+						leave cadastrar;
+						ROLLBACK;
 					
-					ELSE 
+						ELSE 
 					
 						COMMIT; -- registra o pedido 
 						
@@ -100,7 +108,7 @@ cadastrar:BEGIN -- inicio
 						END if; -- fim do if se o pedido foi ou nao cadastrada
 												
 				END if; -- fim do erro da inserçao do pedido
-			
+
 			END if; -- fim de verificaçao do pedido igual a 0
 			
 			-- se id_pedido for maior que 0 significa que o pedido deve ser alterado
@@ -110,8 +118,8 @@ cadastrar:BEGIN -- inicio
 					if (SELECT COUNT(*) FROM pedidos AS ped WHERE ped.id = id_pedido) > 0 then
 					
 						-- realiza o update
-							UPDATE pedido_itens AS itens SET itens.quantidade = itens.quantidade + quantidade_escolhida , 
-							itens.valor = (itens.quantidade * valor_produto), itens.dt_alteracao = NOW() 
+							UPDATE pedido_itens AS itens SET itens.quantidade = quantidade_escolhida , 
+							itens.valor = (quantidade_escolhida * valor_produto), itens.dt_alteracao = NOW() 
 							WHERE itens.id_pedido =  id_pedido AND itens.id_produto = id_produto;
 							
 							if excecao = 1 then 
