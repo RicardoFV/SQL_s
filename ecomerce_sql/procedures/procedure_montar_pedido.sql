@@ -1,5 +1,4 @@
 -- procedure gerar pedido pedido 
-
 DELIMITER //
 CREATE PROCEDURE proc_montar_pedido(
 IN id_pedido INT,

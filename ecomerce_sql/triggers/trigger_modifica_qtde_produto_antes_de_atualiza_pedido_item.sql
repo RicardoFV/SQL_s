@@ -1,7 +1,6 @@
 -- trigger atualiza pedido
 -- trigger deve ativar antes da atualização de um pedido e de pedido item
 -- deve verificar se tem o produto
-
 DELIMITER //
 CREATE TRIGGER trig_subtrair_estoque_ao_atualizar BEFORE UPDATE 
 ON pedido_itens

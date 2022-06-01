@@ -1,7 +1,6 @@
 -- trigger cadastrar pedido
 -- trigger deve ativar antes da inserção de um pedido e de pedido item
 -- deve verificar se tem o produto
-
 DELIMITER //
 CREATE TRIGGER trig_subtrair_estoque_ao_cadastrar BEFORE INSERT 
 ON pedido_itens

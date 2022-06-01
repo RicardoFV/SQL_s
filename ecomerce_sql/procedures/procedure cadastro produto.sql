@@ -1,5 +1,4 @@
 -- crinado o produto 
-
 DELIMITER //
 CREATE PROCEDURE proc_cadastrar_produtos(IN id INT , 
 													IN nome TEXT , 
