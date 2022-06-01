@@ -19,3 +19,5 @@ Nesse projeto é abordado a criação de scripts tais como :
 - Execute os arquivos : "executando a criação do cliente.sql" , "executando a criação do produto.sql", "executando a criação do pedido e pedido item.sql", que estão na pasta "execucao",
 - Execute os arquivos : "v_pedidos_realizados.sql" , "v_quantidade_de_valor_por_produto.sql", que estão na pasta "views",
 - Execute o arquivo : "event_mudar_status_pedido.sql",  que esta na pasta "event".
+
+### Na pasta "backup_banco" tem um arquivo que é o backup do banco com dados de teste.
